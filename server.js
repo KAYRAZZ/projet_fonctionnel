@@ -4,12 +4,14 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -43,11 +45,15 @@ app.post('/login', (req, res) => {
 
 // Middleware pour vérifier le token
 const authenticateJWT = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1];
-    if (token) {
+    const authHeader = req.headers['authorization'];
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
         jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-            if (err) return res.sendStatus(403);
-            req.user = user;
+            if (err) {
+                console.error('JWT verification error:', err);
+                return res.sendStatus(403);
+            }
+            req.userId = user.id; 
             next();
         });
     } else {
@@ -55,9 +61,27 @@ const authenticateJWT = (req, res, next) => {
     }
 };
 
-// Route protégée
-app.get('/planning', authenticateJWT, (req, res) => {
-    res.json({ message: 'Welcome to the Planning page!' });
+// Route pour enregistrer les horaires
+app.post('/api/schedule', authenticateJWT, (req, res) => {
+    console.log('Request received at /api/schedule');
+    const { day, startDateTime, endDateTime } = req.body;
+    console.log('Received data:', req.body);
+    console.log('Day:', day);
+    console.log('Start DateTime:', startDateTime);
+    console.log('End DateTime:', endDateTime);
+
+    if (!day || !startDateTime || !endDateTime) {
+        return res.status(400).json({ message: 'Veuillez remplir tous les champs.' });
+    }
+    const userId = req.userId;
+
+    db.query('INSERT INTO schedules (user_id, day, start_time, end_time) VALUES (?, ?, ?, ?)', [userId, day, startDateTime, endDateTime], (err, result) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: "Erreur lors de l'enregistrement des horaires." });
+        }
+        res.status(201).json({ message: 'Horaires enregistrés avec succès.' });
+    });
 });
 
 const PORT = process.env.PORT || 5000;

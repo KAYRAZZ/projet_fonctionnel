@@ -62,6 +62,19 @@ Ce projet est un exemple de tests unitaires pour un projet fonctionnel. Il inclu
     );
     ```
 
+4. Créez la table `schedules` :
+    ```sql
+    CREATE TABLE schedules (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        day VARCHAR(255) NOT NULL,
+        start_time DATETIME NOT NULL,
+        end_time DATETIME NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+    ```
+
 ## Configuration de l'environnement
 1. Créez un fichier `.env` à la racine du projet et ajoutez les variables d'environnement suivantes :
     ```env

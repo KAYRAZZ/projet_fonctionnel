@@ -6,38 +6,41 @@
         <input type="date" v-model="selectedDateString" @change="onDateChange">
       </div>
       <div class="calendar">
-        <div class="day" v-for="(day, index) in daysWithDates" :key="index">
-            <div>
-                <div>{{ day.day }}</div>
-                <div>{{ day.date }}</div>
-            </div>
-            <div id="info">
-
-            </div>
+        <div class="day" v-for="(day, index) in daysWithDates" :key="index" @click="showDetail(day)">
+          <div>
+            <div>{{ day.day }}</div>
+            <div>{{ day.date }}</div>
+          </div>
+          <div id="info"></div>
         </div>
       </div>
+      <DayDetail v-if="isDetailVisible" :day="selectedDay" @close="closeDetail" />
     </div>
   </template>
   
   <script>
   import { ref, onMounted } from 'vue';
+  import DayDetail from '../components/DayDetail.vue'; // Importer le composant
   
   export default {
+    components: {
+      DayDetail // Enregistrer le composant
+    },
     setup() {
-      // Propriétés réactives
       const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
       const daysWithDates = ref([]);
       const selectedDate = ref(new Date());
       const selectedDateString = ref(selectedDate.value.toISOString().slice(0, 10));
+      const isDetailVisible = ref(false);
+      const selectedDay = ref(null);
   
-      // Fonction pour générer les dates
       const generateDates = () => {
-        daysWithDates.value = []; // Clear the previous dates
-        const firstDayOfWeek = selectedDate.value.getDate() - selectedDate.value.getDay() + 1; // Get the first day of the selected week (Monday)
+        daysWithDates.value = [];
+        const firstDayOfWeek = selectedDate.value.getDate() - selectedDate.value.getDay() + 1;
         const currentMonth = selectedDate.value.getMonth();
         const currentYear = selectedDate.value.getFullYear();
   
-        for (let i = 0; i < 7; i++) { // Generate dates for 1 week (7 days)
+        for (let i = 0; i < 7; i++) {
           const date = new Date(currentYear, currentMonth, firstDayOfWeek + i);
           daysWithDates.value.push({
             day: days[i % 7],
@@ -46,38 +49,47 @@
         }
       };
   
-      // Fonction pour aller à la semaine précédente
       const prevWeek = () => {
         selectedDate.value.setDate(selectedDate.value.getDate() - 7);
         selectedDateString.value = selectedDate.value.toISOString().slice(0, 10);
         generateDates();
       };
   
-      // Fonction pour aller à la semaine suivante
       const nextWeek = () => {
         selectedDate.value.setDate(selectedDate.value.getDate() + 7);
         selectedDateString.value = selectedDate.value.toISOString().slice(0, 10);
         generateDates();
       };
   
-      // Fonction pour gérer le changement de date
       const onDateChange = () => {
         selectedDate.value = new Date(selectedDateString.value);
         generateDates();
       };
   
-      // Initialiser le calendrier lors du montage du composant
+      const showDetail = (day) => {
+        selectedDay.value = day;
+        isDetailVisible.value = true;
+      };
+  
+      const closeDetail = () => {
+        isDetailVisible.value = false;
+        selectedDay.value = null;
+      };
+  
       onMounted(() => {
         generateDates();
       });
   
-      // Retourner les valeurs et méthodes à utiliser dans le template
       return {
         daysWithDates,
         selectedDateString,
         prevWeek,
         nextWeek,
         onDateChange,
+        showDetail,
+        closeDetail,
+        isDetailVisible,
+        selectedDay
       };
     },
   };
@@ -102,6 +114,7 @@
     border: 1px solid #ccc;
     background-color: #f9f9f9;
     text-align: center;
+    cursor: pointer; /* Indique que c'est cliquable */
   }
   </style>
   
