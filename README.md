@@ -20,7 +20,6 @@ Ce projet est un exemple de tests unitaires pour un projet fonctionnel.
 3. Installez les dépendances :
     ```bash
     npm install
-    pnpm install
     ```
 
 
