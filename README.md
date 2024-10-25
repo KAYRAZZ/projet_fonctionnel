@@ -46,7 +46,6 @@ Ce projet est un exemple de tests unitaires pour un projet fonctionnel. Il inclu
 3. Installez les dépendances :
     ```bash
     npm install
-    pnpm install
     ```
 
 ## Configuration de la base de données
@@ -60,8 +59,7 @@ Ce projet est un exemple de tests unitaires pour un projet fonctionnel. Il inclu
     CREATE TABLE users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(255) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        password VARCHAR(255) NOT NULL
     );
     ```
 
@@ -85,5 +83,4 @@ Ce projet est un exemple de tests unitaires pour un projet fonctionnel. Il inclu
 Pour exécuter les tests unitaires, utilisez la commande suivante :
 ```bash
 npm test
-pnpm test
 ```
