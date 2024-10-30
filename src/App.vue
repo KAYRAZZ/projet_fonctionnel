@@ -5,6 +5,7 @@
       <router-link to="/login">Login</router-link>
       <router-link to="/register">Register</router-link>
       <router-link to="/planning" v-if="isAuthenticated">Planning</router-link>
+      <router-link to="/settings" v-if="isAuthenticated">Settings</router-link>
       <button v-if="isAuthenticated" @click="logout">Logout</button>
     </nav>
     <router-view />

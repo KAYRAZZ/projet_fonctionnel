@@ -29,49 +29,51 @@ export default defineComponent({
     };
 
     const validerHoraires = async () => {
-  if (horaireDebut.value && horaireFin.value) {
-    console.log('Valider horaires:', horaireDebut.value, horaireFin.value);
-    
-    try {
-      const token = localStorage.getItem('token'); // Récupérer le token JWT depuis le stockage local.
-      console.log(props.day.day, props.day.date, horaireDebut.value, horaireFin.value);
-      
-      // Format des horaires en incluant la date
-      const startDateTime = `${props.day.date} ${horaireDebut.value}:00`; // Ajoute la date et l'heure
-      const endDateTime = `${props.day.date} ${horaireFin.value}:00`; // Ajoute la date et l'heure
+      if (horaireDebut.value && horaireFin.value) {
+        console.log('Valider horaires:', horaireDebut.value, horaireFin.value);
 
-      const response = await fetch('http://localhost:5000/api/schedule', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Inclure le token JWT dans les en-têtes
-        },
-        body: JSON.stringify({
-          day: props.day.day,
-          startDateTime,
-          endDateTime
-        })
-      });
-      console.log(response);
+        try {
+          const token = localStorage.getItem('token'); // Récupérer le token JWT depuis le stockage local.
+          console.log(props.day.day, props.day.date, horaireDebut.value, horaireFin.value);
 
-      if (response.ok) {
-        alert('Horaires enregistrés avec succès !');
-        // Réinitialiser les champs après l'enregistrement
-        horaireDebut.value = '';
-        horaireFin.value = '';
-        close();
+          // Créer les chaînes de caractères au format requis par MySQL
+          const startDateTime = `${props.day.date} ${horaireDebut.value}:00`; // Format YYYY-MM-DD HH:MM:SS
+          const endDateTime = `${props.day.date} ${horaireFin.value}:00`; // Format YYYY-MM-DD HH:MM:SS
+
+          console.log('startDateTime:', startDateTime);
+          console.log('endDateTime:', endDateTime);
+
+          const response = await fetch('http://localhost:5000/api/schedule', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}` // Inclure le token JWT dans les en-têtes
+            },
+            body: JSON.stringify({
+              day: props.day.date, // Utiliser props.day.date pour envoyer la date au format YYYY-MM-DD
+              startDateTime, // Envoi au format YYYY-MM-DD HH:MM:SS
+              endDateTime     // Envoi au format YYYY-MM-DD HH:MM:SS
+            })
+          });
+          console.log(response);
+
+          if (response.ok) {
+            alert('Horaires enregistrés avec succès !');
+            // Réinitialiser les champs après l'enregistrement
+            horaireDebut.value = '';
+            horaireFin.value = '';
+            close();
+          } else {
+            alert('Erreur lors de l\'enregistrement des horaires.');
+          }
+        } catch (error) {
+          console.error('Erreur lors de l\'enregistrement des horaires:', error);
+          alert('Erreur lors de l\'enregistrement des horaires.');
+        }
       } else {
-        alert('Erreur lors de l\'enregistrement des horaires.');
+        alert('Veuillez renseigner les deux horaires.');
       }
-    } catch (error) {
-      console.error('Erreur lors de l\'enregistrement des horaires:', error);
-      alert('Erreur lors de l\'enregistrement des horaires.');
-    }
-  } else {
-    alert('Veuillez renseigner les deux horaires.');
-  }
-};
-
+    };
 
     return {
       close,

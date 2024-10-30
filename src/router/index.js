@@ -3,12 +3,14 @@ import Home from '../views/Home.vue';
 import Planning from '../views/Planning.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
+import Settings from '../views/Settings.vue';
 
 const routes = [
     { path: '/', component: Home, meta: { requiresGuest: true } },
     { path: '/login', component: Login, meta: { requiresGuest: true } },
     { path: '/register', component: Register, meta: { requiresGuest: true } },
-    { path: '/planning', component: Planning, meta: { requiresAuth: true } }
+    { path: '/planning', component: Planning, meta: { requiresAuth: true } },
+    {path: '/settings', component: Settings, meta: { requiresAuth: true } }
 ];
 
 const router = createRouter({
