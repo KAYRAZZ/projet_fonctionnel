@@ -89,7 +89,6 @@ export default {
           date: formattedDate,
           tasks: tasks
         });
-        console.log(tasks);
       }
     };
 
