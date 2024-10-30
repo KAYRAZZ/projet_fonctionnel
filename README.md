@@ -11,7 +11,7 @@ Ce projet est un exemple de tests unitaires pour un projet fonctionnel. Il inclu
 ## Installation
 1. Clonez le dépôt :
     ```bash
-    git clone https://github.com/votre-utilisateur/projet_fonctionnel.git
+    git clone https://github.com/KAYRAZZ/projet_fonctionnel.git
     ```
 2. Accédez au répertoire du projet :
     ```bash
