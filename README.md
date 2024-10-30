@@ -55,6 +55,8 @@ npm dev
 ```
 
 ## Lancer les tests
+Le fichier par défaut des tests unitaires se trouve dans src/components/__tests__
+
 Pour exécuter les tests unitaires, utilisez la commande suivante :
 ```bash
 npm test
