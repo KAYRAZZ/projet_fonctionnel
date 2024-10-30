@@ -37,7 +37,7 @@ Ce projet est un exemple de tests unitaires pour un projet fonctionnel. Il inclu
     JWT_SECRET=your_jwt_secret
     ```
     - **DB_HOST** : L'adresse de l'hôte de la base de données (généralement `localhost`).
-    - **DB_USER** : Le nom d'utilisateur MySQL que vous  crééavez.
+    - **DB_USER** : Le nom d'utilisateur MySQL que vous avez créé.
     - **DB_PASS** : Le mot de passe de l'utilisateur MySQL.
     - **DB_NAME** : Le nom de la base de données que vous avez créée.
     - **JWT_SECRET** : Une clé secrète utilisée pour signer les tokens JWT. Assurez-vous qu'elle est suffisamment complexe et sécurisée.
