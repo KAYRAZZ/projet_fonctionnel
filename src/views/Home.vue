@@ -152,6 +152,7 @@
         selectedDay,
         formatTime
       };
+      
     },
   };
   </script>

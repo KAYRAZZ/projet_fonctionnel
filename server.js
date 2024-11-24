@@ -29,7 +29,7 @@ app.post('/register', async (req, res) => {
     const { username, password } = req.body;
     if (username.length == 0 || password.length == 0) {
         return res.status(400).json({ message: 'Veuillez remplir tous les champs.' });
-    }else{
+    } else {
         // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(password, 10);
         db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err, result) => {
@@ -180,3 +180,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`); // Log server start
 });
+
