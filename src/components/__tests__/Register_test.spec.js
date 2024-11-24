@@ -130,4 +130,4 @@ describe('Login Tests', () => {
         expect(response.data.message).toBe('Login successful.');
         expect(response.data.token).toBe('mock-jwt-token');
     });
-});
+}); 
