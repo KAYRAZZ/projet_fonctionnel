@@ -1,4 +1,4 @@
-CREATE DATABASE projet_fonctionnel;
+CREATE DATABASE calendrier;
 
 CREATE TABLE users (
     id_user INT AUTO_INCREMENT PRIMARY KEY,
