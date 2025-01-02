@@ -44,3 +44,5 @@ describe('Logout Component Tests', () => {
         expect(window.location.href).toBe('/');
     });
 });
+
+
